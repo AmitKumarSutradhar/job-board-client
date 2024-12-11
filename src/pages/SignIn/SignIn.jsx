@@ -1,7 +1,7 @@
 import Lottie from 'lottie-react';
-import loginLottieData from '../../../assets/lottie/login.json';
+import loginLottieData from '../../assets/lottie/login.json';
 import { useContext } from 'react';
-import AuthContext from '../../../context/AuthContext/AuthContext';
+import AuthContext from '../../context/AuthContext/AuthContext';
 
 const SignIn = () => {
     const { signInUser } = useContext(AuthContext);
