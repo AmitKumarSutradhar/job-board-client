@@ -1,12 +1,12 @@
 import Lottie from 'lottie-react';
-import React, { useContext } from 'react';
-import registerLottieData from '../../../assets/lottie/register.json';
+import loginLottieData from '../../../assets/lottie/login.json';
+import { useContext } from 'react';
 import AuthContext from '../../../context/AuthContext/AuthContext';
 
-const Register = () => {
-    const {createUser} = useContext(AuthContext);
+const SignIn = () => {
+    const { signInUser } = useContext(AuthContext);
 
-    const handleRegister = (e) =>{
+    const handleSignIn = (e) =>{
         e.preventDefault();
 
         const form = e.target;
@@ -14,23 +14,22 @@ const Register = () => {
         const passowrd = form.password.value;
         console.log("Hello", email, passowrd);
         
-        createUser(email, passowrd)
+        signInUser(email, passowrd)
         .then(result => {
             console.log(result.user);
         })
         .catch()
-
     }
 
     return (
         <div className="hero bg-base-200 min-h-screen">
             <div className="hero-content flex-col lg:flex-row-reverse">
                 <div className="text-center lg:text-left">
-                    <Lottie animationData={registerLottieData}></Lottie>
+                    <Lottie animationData={loginLottieData}></Lottie>
                 </div>
                 <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-                    <form onSubmit={handleRegister} className="card-body">
-                    <h1 className="text-5xl font-bold">Register!</h1>
+                    <form onSubmit={handleSignIn} className="card-body">
+                        <h1 className="text-5xl font-bold">Sign In!</h1>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Email</span>
@@ -47,7 +46,7 @@ const Register = () => {
                             </label>
                         </div>
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary">Register</button>
+                            <button className="btn btn-primary">Sign In</button>
                         </div>
                     </form>
                 </div>
@@ -56,4 +55,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default SignIn;
