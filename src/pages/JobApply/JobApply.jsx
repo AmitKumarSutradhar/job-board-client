@@ -1,11 +1,12 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import Swal from 'sweetalert2';
 
 const JobApply = () => {
     const { id } = useParams();
-    const{ user } = useAuth();
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
     console.log(user);
 
@@ -32,51 +33,49 @@ const JobApply = () => {
             },
             body: JSON.stringify(jobApplication)
         })
-        .then(res => res.json())
-        .then(data => {
-            if(data.insertedId){
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Your applicaton has been saved",
-                    showConfirmButton: false,
-                    timer: 1500
-                  });
-            }
-        })
-
-        // console.log(linkedin, github, resume);
-        console.log(jobApplication);
+            .then(res => res.json())
+            .then(data => {
+                if (data.insertedId) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your applicaton has been saved",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    navigate('/myApplications');
+                }
+            })
     }
     return (
         <div className="hero bg-base-200 min-h-screen">
             <div className="card bg-base-100 w-1/2 mx-auto shrink-0 shadow-2xl">
-                    <form onSubmit={submitJobApplication} className="card-body">
+                <form onSubmit={submitJobApplication} className="card-body">
                     <h1 className="text-5xl font-bold">Apply job and good luck!</h1>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Linkedin URL</span>
-                            </label>
-                            <input type="url" name='linkedin' placeholder="Linkedin URL" className="input input-bordered" required />
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">GitHub URL</span>
-                            </label>
-                            <input type="url" name='github' placeholder="GitHub URL" className="input input-bordered" required />
-                        </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">Linkedin URL</span>
+                        </label>
+                        <input type="url" name='linkedin' placeholder="Linkedin URL" className="input input-bordered" required />
+                    </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">GitHub URL</span>
+                        </label>
+                        <input type="url" name='github' placeholder="GitHub URL" className="input input-bordered" required />
+                    </div>
 
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Resume URL</span>
-                            </label>
-                            <input type="url" name='resume' placeholder="Resume URL" className="input input-bordered" required />
-                        </div>
-                        <div className="form-control mt-6">
-                            <button className="btn btn-primary">Apply Now</button>
-                        </div>
-                    </form>
-                </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">Resume URL</span>
+                        </label>
+                        <input type="url" name='resume' placeholder="Resume URL" className="input input-bordered" required />
+                    </div>
+                    <div className="form-control mt-6">
+                        <button className="btn btn-primary">Apply Now</button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };
