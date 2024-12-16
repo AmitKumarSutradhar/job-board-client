@@ -1,6 +1,12 @@
 import React from 'react';
+import useAuth from '../../hooks/useAuth';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const AddJob = () => {
+    const { user } = useAuth();
+    const navigate = useNavigate();
+
     const handleAddJob = (e) => {
         e.preventDefault();
 
@@ -8,10 +14,34 @@ const AddJob = () => {
         // console.log(formData.entries());
         const initialData = Object.fromEntries(formData.entries());
 
-        const { min, max, currency, ...newJob} = initialData;
-        console.log(newJob);
+        const { min, max, currency, ...newJob } = initialData;
 
-        newJob.salaryRange = { min, max, currency }
+        newJob.salaryRange = { min, max, currency };
+        newJob.requirements = newJob.requirements.split("\n");
+        newJob.responsibilites = newJob.responsibilites.split("\n");
+        // console.log(newJob);
+
+        fetch('http://localhost:5000/jobs', {
+            method: "POST",
+            headers: {
+                'content-type': 'applicaiton/json'
+            },
+            body: JSON.stringify(newJob),
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.insertedId) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your job has been saved",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    navigate('/myApplications');
+                }
+            })
+
     }
     return (
         <div>
@@ -31,15 +61,15 @@ const AddJob = () => {
                     </label>
                     <input type="text" name='location' placeholder="Job Location" className="input input-bordered" required />
                 </div>
-                 
+
                 <div className="flex justify-between">
                     {/* Job Type  */}
                     <div className="form-control flex-1 mr-3">
                         <label className="label">
                             <span className="label-text">Job Type</span>
                         </label>
-                        <select className="select select-bordered w-full">
-                            <option disabled selected>Pick a job type</option>
+                        <select defaultValue={"Pick a job type"} className="select select-bordered w-full">
+                            <option disabled>Pick a job type</option>
                             <option>Full-time</option>
                             <option>Intern</option>
                             <option>Part-time</option>
@@ -50,8 +80,8 @@ const AddJob = () => {
                         <label className="label">
                             <span className="label-text">Job Category</span>
                         </label>
-                        <select className="select select-bordered w-full">
-                            <option disabled selected>Pick a job category</option>
+                        <select defaultValue={"Pick a job category"} className="select select-bordered w-full">
+                            <option disabled>Pick a job category</option>
                             <option>Engineering</option>
                             <option>Marketing</option>
                             <option>Finance</option>
@@ -66,14 +96,14 @@ const AddJob = () => {
                         <label className="label">
                             <span className="label-text">Salary Range</span>
                         </label>
-                        <input type="text" name='title' placeholder="Min" className="input input-bordered" required />
+                        <input type="text" name='min' placeholder="Min" className="input input-bordered" required />
                     </div>
                     <div className="form-control">
-                        <input type="text" name='title' placeholder="Max" className="input input-bordered" required />
+                        <input type="text" name='max' placeholder="Max" className="input input-bordered" required />
                     </div>
                     <div className="form-control flex-1">
-                        <select name='currency' className="select select-bordered w-full">
-                            <option disabled selected>Currency</option>
+                        <select name='currency' defaultValue={"Currency"} className="select select-bordered w-full">
+                            <option disabled>Currency</option>
                             <option>BDT</option>
                             <option>USD</option>
                             <option>INR</option>
@@ -105,7 +135,7 @@ const AddJob = () => {
                     </label>
                     <textarea name='requirements' className="textarea textarea-bordered" placeholder="Each Requriemnet in a new line"></textarea>
                 </div>
-                
+
                 {/* Job Responsibility  */}
                 <div className="form-control">
                     <label className="label">
@@ -114,24 +144,24 @@ const AddJob = () => {
                     <textarea name='responsibilites' className="textarea textarea-bordered" placeholder="Write each responsibility in a new line"></textarea>
                 </div>
 
-                 {/* HR Name */}
-                 <div className="form-control">
+                {/* HR Name */}
+                <div className="form-control">
                     <label className="label">
                         <span className="label-text">HR Name</span>
                     </label>
                     <input type="text" name='hr_name' placeholder="HR Name" className="input input-bordered" required />
                 </div>
 
-                 {/* HR Email */}
-                 <div className="form-control">
+                {/* HR Email */}
+                <div className="form-control">
                     <label className="label">
                         <span className="label-text">HR Email</span>
                     </label>
-                    <input type="text" name='hr_email' placeholder="HR Email" className="input input-bordered" required />
+                    <input type="text" name='hr_email' defaultValue={user?.email} className="input input-bordered" required />
                 </div>
 
-                 {/* Company Logo URL */}
-                 <div className="form-control">
+                {/* Company Logo URL */}
+                <div className="form-control">
                     <label className="label">
                         <span className="label-text">Company Logo URL</span>
                     </label>
