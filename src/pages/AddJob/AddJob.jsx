@@ -19,14 +19,14 @@ const AddJob = () => {
         newJob.salaryRange = { min, max, currency };
         newJob.requirements = newJob.requirements.split("\n");
         newJob.responsibilites = newJob.responsibilites.split("\n");
-        // console.log(newJob);
+        console.log(newJob);
 
         fetch('http://localhost:5000/jobs', {
-            method: "POST",
+            method: 'POST',
             headers: {
-                'content-type': 'applicaiton/json'
+                'content-type': 'application/json'
             },
-            body: JSON.stringify(newJob),
+            body: JSON.stringify(newJob)
         })
             .then(res => res.json())
             .then(data => {
@@ -158,6 +158,14 @@ const AddJob = () => {
                         <span className="label-text">HR Email</span>
                     </label>
                     <input type="text" name='hr_email' defaultValue={user?.email} className="input input-bordered" required />
+                </div>
+
+                {/* Application Deadline */}
+                <div className="form-control">
+                    <label className="label">
+                        <span className="label-text">Deadline</span>
+                    </label>
+                    <input type="date" name='applicationDeadline' placeholder='Deadline' className="input input-bordered" required />
                 </div>
 
                 {/* Company Logo URL */}
