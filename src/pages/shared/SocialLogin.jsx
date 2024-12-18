@@ -6,8 +6,6 @@ const SocialLogin = () => {
 
     const handleGoogleSignIn =()=>{
         signInWithGoogle()
-        .then()
-        .catch()
     }
     return (
         <div className='p-5'>
