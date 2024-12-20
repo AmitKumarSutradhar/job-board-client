@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import axios from 'axios';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const MyApplication = () => {
     const { user } = useAuth();
     const [jobs, setJobs] = useState([]);
+    const axiosSecure = useAxiosSecure();
 
     useEffect(() => {
         // fetch(`http://localhost:5000/job-applicaiton?email=${user.email}`)
@@ -13,10 +15,16 @@ const MyApplication = () => {
         //         setJobs(data);
         //     })
 
-        axios.get(`http://localhost:5000/job-applicaiton?email=${user.email}`, {
-            withCredentials: true
-        })
+        // axios.get(`http://localhost:5000/job-applicaiton?email=${user.email}`, {
+        //     withCredentials: true
+        // })
+        //     .then(res => setJobs(res.data))
+
+
+        axiosSecure.get(`/job-applicaiton?email=${user.email}`)
         .then(res => setJobs(res.data))
+
+
     }, [user.email]);
 
     return (
@@ -53,13 +61,13 @@ const MyApplication = () => {
                                         <div className="avatar">
                                             <div className="mask mask-squircle h-12 w-12">
                                                 <img
-                                                    src={ job.company_logo }
+                                                    src={job.company_logo}
                                                     alt="Avatar Tailwind CSS Component" />
                                             </div>
                                         </div>
                                         <div>
-                                            <div className="font-bold">{ job.title }</div>
-                                            <div className="text-sm opacity-50">{ job.location }</div>
+                                            <div className="font-bold">{job.title}</div>
+                                            <div className="text-sm opacity-50">{job.location}</div>
                                         </div>
                                     </div>
                                 </td>
